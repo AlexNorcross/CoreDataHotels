@@ -14,7 +14,6 @@
 @interface HotelsViewController () <UITableViewDataSource, UITableViewDelegate>
 @property (weak, nonatomic) IBOutlet UITableView *tableHotels;
 @property (strong, nonatomic) NSArray *hotels;
-@property (strong, nonatomic) Hotel *selectedHotel;
 @end
 
 @implementation HotelsViewController
@@ -22,20 +21,30 @@
 - (void)viewDidLoad {
   [super viewDidLoad];
   
+  //Title
+  self.title = @"Hotels";
+  
   //Table
   _tableHotels.dataSource = self;
   _tableHotels.delegate = self;
   
-  //Hotels
+  //Managed object context
   AppDelegate *appDelegate = [UIApplication sharedApplication].delegate;
   NSManagedObjectContext *context = appDelegate.managedObjectContext;
+  
+  //Hotels
   NSFetchRequest *requestHotels = [[NSFetchRequest alloc] initWithEntityName:@"Hotel"];
+  NSSortDescriptor *sortHotels = [[NSSortDescriptor alloc] initWithKey:@"name" ascending:YES];
+  [requestHotels setSortDescriptors:@[sortHotels]];
   NSError *fetchError;
   NSArray *fetchResults = [context executeFetchRequest:requestHotels error:&fetchError];
   if (fetchError == nil) {
     _hotels = fetchResults;
     [_tableHotels reloadData];
   } //end if
+  
+//
+//  [request setSortDescriptors:@[sortDescriptor]];
 }
 
 #pragma mark - table view data source
@@ -61,17 +70,8 @@
 
 //Selected hotel
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-  _selectedHotel = _hotels[indexPath.row];
-} //end func
-
-#pragma mark - Navigation
-
-//Preparation for navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-  if ([segue.identifier isEqual:@"SEGUE_TO_ROOMS"]) {
-    //View controller
-    RoomsViewController *vcRooms = segue.destinationViewController;
-    vcRooms.selectedHotel = _selectedHotel;
-  } //end if
+  RoomsViewController *vcRooms = [self.storyboard instantiateViewControllerWithIdentifier:@"VC_ROOMS"];
+  vcRooms.selectedHotel = _hotels[indexPath.row];
+  [self.navigationController pushViewController:vcRooms animated:true];
 } //end func
 @end

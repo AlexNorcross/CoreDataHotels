@@ -9,9 +9,10 @@
 #import "RoomsViewController.h"
 #import "Hotel.h"
 #import "Room.h"
+#import "RoomBookViewController.h"
 
 
-@interface RoomsViewController () <UITableViewDataSource>
+@interface RoomsViewController () <UITableViewDataSource, UITableViewDelegate>
 @property (weak, nonatomic) IBOutlet UITableView *tableRooms;
 @property (strong, nonatomic) NSArray *rooms;
 @end
@@ -20,15 +21,17 @@
 
 - (void)viewDidLoad {
   [super viewDidLoad];
-  
+
   //Title
-//  [_navigationItem setTitle:_selectedHotel.name];
+  self.title = _selectedHotel.name;
   
   //Table
   _tableRooms.dataSource = self;
+  _tableRooms.delegate = self;
   
   //Rooms
-  _rooms = [_selectedHotel.rooms allObjects];
+  NSSortDescriptor *sortRooms = [[NSSortDescriptor alloc] initWithKey:@"number" ascending:YES];
+  _rooms = [_selectedHotel.rooms sortedArrayUsingDescriptors:@[sortRooms]];
 } //end func
 
 #pragma mark - table view data source
@@ -45,18 +48,27 @@
   //Cell
   UITableViewCell *newCell = [tableView dequeueReusableCellWithIdentifier:@"CELL_ROOM" forIndexPath:indexPath];
   newCell.textLabel.text = [newRoom.number stringValue];
+  newCell.detailTextLabel.text = [NSString stringWithFormat:@"%@ %s", newRoom.numberOfBeds, "beds"];
   //Return cell
   return newCell;
 } //end func
 
-/*
-#pragma mark - Navigation
+#pragma mark - table view delegate
 
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
+//Table header text
+- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
+  return @"Room Number";
+} //end func
 
+//Table header height
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
+  return 50;
+} //end func
+
+//Go to Room
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+  RoomBookViewController *vcRoomBook = [self.storyboard instantiateViewControllerWithIdentifier:@"VC_ROOM_BOOK"];
+  vcRoomBook.selectedRoom = _rooms[indexPath.row];
+  [self.navigationController pushViewController:vcRoomBook animated:true];
+} //end func
 @end

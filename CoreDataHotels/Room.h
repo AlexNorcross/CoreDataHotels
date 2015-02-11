@@ -2,7 +2,7 @@
 //  Room.h
 //  CoreDataHotels
 //
-//  Created by Alexandra Norcross on 2/9/15.
+//  Created by Alexandra Norcross on 2/10/15.
 //  Copyright (c) 2015 Alexandra Norcross. All rights reserved.
 //
 

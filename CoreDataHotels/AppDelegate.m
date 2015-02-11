@@ -20,9 +20,12 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
   // Override point for customization after application launch.
   
+  NSLog(@"%@",[[[NSFileManager defaultManager] URLsForDirectory:NSDocumentDirectory  inDomains:NSUserDomainMask] lastObject]);
+  
   //Appearance
-  [[UILabel appearance] setFont:[UIFont fontWithName:@"Didot" size:17]];
-  [[UIButton appearance] setFont:[UIFont fontWithName:@"Didot" size:17]];
+  [[UILabel appearance] setFont:[UIFont fontWithName:@"HiraMinProN-W3" size:17]];
+  [[UIButton appearance] setFont:[UIFont fontWithName:@"Avenir" size:17]];
+  [UINavigationBar appearance].titleTextAttributes = [NSDictionary dictionaryWithObjectsAndKeys: [UIFont fontWithName:@"Avenir" size:17.0], NSFontAttributeName, nil];
 
   //Seed database
   [self fetchHotels];
