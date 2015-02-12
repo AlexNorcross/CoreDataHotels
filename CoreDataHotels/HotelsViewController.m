@@ -7,7 +7,7 @@
 //
 
 #import "HotelsViewController.h"
-#import "AppDelegate.h"
+#import "HotelService.h"
 #import "Hotel.h"
 #import "RoomsViewController.h"
 
@@ -29,8 +29,7 @@
   _tableHotels.delegate = self;
   
   //Managed object context
-  AppDelegate *appDelegate = [UIApplication sharedApplication].delegate;
-  NSManagedObjectContext *context = appDelegate.managedObjectContext;
+  NSManagedObjectContext *context = [[HotelService sharedService] coreDataStack].managedObjectContext;
   
   //Hotels
   NSFetchRequest *requestHotels = [[NSFetchRequest alloc] initWithEntityName:@"Hotel"];
@@ -42,10 +41,7 @@
     _hotels = fetchResults;
     [_tableHotels reloadData];
   } //end if
-  
-//
-//  [request setSortDescriptors:@[sortDescriptor]];
-}
+} //end func
 
 #pragma mark - table view data source
 

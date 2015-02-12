@@ -7,8 +7,9 @@
 //
 
 #import "AvailabilityViewController.h"
-#import "AppDelegate.h"
+#import "HotelService.h"
 #import "Reservation.h"
+#import "AvailableRoomsViewController.h"
 
 @interface AvailabilityViewController ()
 @property (weak, nonatomic) IBOutlet UIDatePicker *startDatePicker;
@@ -22,8 +23,7 @@
   [super viewDidLoad];
   
   //Context
-  AppDelegate *appDelegate = [UIApplication sharedApplication].delegate;
-  _context = appDelegate.managedObjectContext;
+  _context = [[HotelService sharedService] coreDataStack].managedObjectContext;
   
   //Title
   self.title = @"Check Availability";
@@ -44,12 +44,6 @@
     NSDate *selEndDate = _endDatePicker.date;
     
     //Fetch request - w/ predicate to check availability a room at specified dates
-    //Invalid conditions:
-    //startDate <= selStartDate AND endDate <= selEndDate AND endDate >= selStartDate
-    //startDate >= selStartDate AND endDate <= selEndDate
-    //startDate <= selStartDate AND endDate >= selEndDate
-    //startDate >= selStartDate AND endDate >= selEndDate AND startDate <= selEndDate
-    
     //Valid condition:
     //selStartDate <= endDate AND selEndDate >= startDate
     NSFetchRequest *fetchReservations = [[NSFetchRequest alloc] initWithEntityName:@"Reservation"];
@@ -80,6 +74,11 @@
       //Check fetch results
       if (fetchErrorRoomsAvail == nil) { //rooms available
         NSLog(@"%lu %s", (unsigned long)fetchRoomAvail.count, "rooms are available");
+        
+        //Show available rooms
+        AvailableRoomsViewController *vcAvailableRooms = [[self storyboard] instantiateViewControllerWithIdentifier:@"VC_AVAILABLE_ROOMS"];
+        vcAvailableRooms.rooms = fetchRoomAvail;
+        [self.navigationController pushViewController:vcAvailableRooms animated:true];
       } else {
         NSLog(@"error checking room availability");
       } //end if

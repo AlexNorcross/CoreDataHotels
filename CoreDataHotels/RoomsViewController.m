@@ -9,7 +9,7 @@
 #import "RoomsViewController.h"
 #import "Hotel.h"
 #import "Room.h"
-#import "RoomBookViewController.h"
+#import "RoomReservationsViewController.h"
 
 
 @interface RoomsViewController () <UITableViewDataSource, UITableViewDelegate>
@@ -62,13 +62,13 @@
 
 //Table header height
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
-  return 50;
+  return 40;
 } //end func
 
 //Go to Room
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-  RoomBookViewController *vcRoomBook = [self.storyboard instantiateViewControllerWithIdentifier:@"VC_ROOM_BOOK"];
-  vcRoomBook.selectedRoom = _rooms[indexPath.row];
-  [self.navigationController pushViewController:vcRoomBook animated:true];
+  RoomReservationsViewController *vcRoomReservations = [self.storyboard instantiateViewControllerWithIdentifier:@"VC_ROOM_RESERVATIONS"];
+  vcRoomReservations.selectedRoom = _rooms[indexPath.row];
+  [self.navigationController pushViewController:vcRoomReservations animated:true];
 } //end func
 @end
