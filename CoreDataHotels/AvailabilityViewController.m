@@ -38,55 +38,66 @@
 
 //Check availability
 - (IBAction)pressedCheckAvailability:(id)sender {
-  NSDate *selStartDate = [_startDatePicker.date earlierDate:_endDatePicker.date];
-  if (_startDatePicker.date == selStartDate) { //dates are ordered; check availability
-    //End date:
-    NSDate *selEndDate = _endDatePicker.date;
-    
-    //Fetch request - w/ predicate to check availability a room at specified dates
-    //Valid condition:
-    //selStartDate <= endDate AND selEndDate >= startDate
-    NSFetchRequest *fetchReservations = [[NSFetchRequest alloc] initWithEntityName:@"Reservation"];
-    NSPredicate *predicateRervations = [NSPredicate predicateWithFormat:@"(startDate <= %@ AND endDate >= %@)", selEndDate, selStartDate];
-    fetchReservations.predicate = predicateRervations;
-    
-    //Fetch request
-    NSError *fetchErrorReservations;
-    NSArray *fetchReservationResults = [_context executeFetchRequest:fetchReservations error:&fetchErrorReservations];
-    
-    //Check fetch results
-    if (fetchErrorReservations == nil) {
-      //Rooms not available:
-      NSMutableArray *roomsNotAvail = [[NSMutableArray alloc] init];
-      for (Reservation *roomNotAvail in fetchReservationResults) {
-        [roomsNotAvail addObject:roomNotAvail];
-      } //end for
+  NSDate *today = [NSDate date];
+  NSDate *checkStartDateOld = [_startDatePicker.date earlierDate:today];
+  if (today == checkStartDateOld) {
+    NSDate *selStartDate = [_startDatePicker.date earlierDate:_endDatePicker.date];
+    if (_startDatePicker.date == selStartDate) { //dates are ordered; check availability
+      //End date:
+      NSDate *selEndDate = _endDatePicker.date;
       
-      //Fetch request - w/ predicate to exclude rooms not available
-      NSFetchRequest *fetchRoomsAvail = [[NSFetchRequest alloc] initWithEntityName:@"Room"];
-      NSPredicate *predicateRoomsAvail = [NSPredicate predicateWithFormat:@"NOT self in %@", roomsNotAvail];
-      fetchRoomsAvail.predicate = predicateRoomsAvail;
+      //Fetch request - w/ predicate to check availability a room at specified dates
+      //Valid condition:
+      //selStartDate <= endDate AND selEndDate >= startDate
+      NSFetchRequest *fetchReservations = [[NSFetchRequest alloc] initWithEntityName:@"Reservation"];
+      NSPredicate *predicateRervations = [NSPredicate predicateWithFormat:@"(startDate <= %@ AND endDate >= %@)", selEndDate, selStartDate];
+      fetchReservations.predicate = predicateRervations;
       
       //Fetch request
-      NSError *fetchErrorRoomsAvail;
-      NSArray *fetchRoomAvail = [_context executeFetchRequest:fetchRoomsAvail error:&fetchErrorRoomsAvail];
+      NSError *fetchErrorReservations;
+      NSArray *fetchReservationResults = [_context executeFetchRequest:fetchReservations error:&fetchErrorReservations];
       
       //Check fetch results
-      if (fetchErrorRoomsAvail == nil) { //rooms available
-        NSLog(@"%lu %s", (unsigned long)fetchRoomAvail.count, "rooms are available");
+      if (fetchErrorReservations == nil) {
+        //Rooms not available:
+        NSMutableArray *roomsNotAvail = [[NSMutableArray alloc] init];
+        for (Reservation *roomNotAvail in fetchReservationResults) {
+          [roomsNotAvail addObject:roomNotAvail];
+        } //end for
         
-        //Show available rooms
-        AvailableRoomsViewController *vcAvailableRooms = [[self storyboard] instantiateViewControllerWithIdentifier:@"VC_AVAILABLE_ROOMS"];
-        vcAvailableRooms.rooms = fetchRoomAvail;
-        [self.navigationController pushViewController:vcAvailableRooms animated:true];
+        //Fetch request - w/ predicate to exclude rooms not available
+        NSFetchRequest *fetchRoomsAvail = [[NSFetchRequest alloc] initWithEntityName:@"Room"];
+        NSPredicate *predicateRoomsAvail = [NSPredicate predicateWithFormat:@"NOT self in %@", roomsNotAvail];
+        fetchRoomsAvail.predicate = predicateRoomsAvail;
+        
+        //Sort by hotel, by room
+        NSSortDescriptor *sortByHotel = [[NSSortDescriptor alloc] initWithKey:@"hotel" ascending:YES];
+        NSSortDescriptor *sortByRoom = [[NSSortDescriptor alloc] initWithKey:@"number" ascending:YES];
+        [fetchRoomsAvail setSortDescriptors:@[sortByHotel, sortByRoom]];
+        
+        //Fetch request
+        NSError *fetchErrorRoomsAvail;
+        NSArray *fetchRoomAvail = [_context executeFetchRequest:fetchRoomsAvail error:&fetchErrorRoomsAvail];
+        
+        //Check fetch results
+        if (fetchErrorRoomsAvail == nil) { //rooms available
+          NSLog(@"%lu %s", (unsigned long)fetchRoomAvail.count, "rooms are available");
+          
+          //Show available rooms
+          AvailableRoomsViewController *vcAvailableRooms = [[self storyboard] instantiateViewControllerWithIdentifier:@"VC_AVAILABLE_ROOMS"];
+          vcAvailableRooms.rooms = fetchRoomAvail;
+          [self.navigationController pushViewController:vcAvailableRooms animated:true];
+        } else {
+          NSLog(@"error checking room availability");
+        } //end if
       } else {
-        NSLog(@"error checking room availability");
-      } //end if
+        NSLog(@"error checking reservation availability");
+      } //end if    
     } else {
-      NSLog(@"error checking reservation availability");
-    } //end if    
+      NSLog(@"reorder dates");
+    } //end if
   } else {
-    NSLog(@"reorder dates");
+    NSLog(@"dates are old");
   } //end if
 } //end func
 @end

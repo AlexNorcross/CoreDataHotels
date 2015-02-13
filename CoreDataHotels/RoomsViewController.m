@@ -47,23 +47,13 @@
   Room *newRoom = _rooms[indexPath.row];
   //Cell
   UITableViewCell *newCell = [tableView dequeueReusableCellWithIdentifier:@"CELL_ROOM" forIndexPath:indexPath];
-  newCell.textLabel.text = [newRoom.number stringValue];
+  newCell.textLabel.text = [NSString stringWithFormat:@"%s %@", "room", newRoom.number];
   newCell.detailTextLabel.text = [NSString stringWithFormat:@"%@ %s", newRoom.numberOfBeds, "beds"];
   //Return cell
   return newCell;
 } //end func
 
 #pragma mark - table view delegate
-
-//Table header text
-- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
-  return @"Room Number";
-} //end func
-
-//Table header height
-- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
-  return 40;
-} //end func
 
 //Go to Room
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
