@@ -63,24 +63,35 @@
 }
 
 - (void) testBookReservationForGuest {
+  
   //Start date
-  NSDate *startDate = [NSDate date];
+  NSDate *today = [NSDate date];
+  NSDateComponents *startDateComp = [[NSCalendar currentCalendar] components:NSCalendarUnitDay | NSCalendarUnitMonth | NSCalendarUnitYear fromDate:today];
+  startDateComp.day++;
+  NSDate *startDate = [[NSCalendar currentCalendar] dateFromComponents:startDateComp];
+  
   //End date
   NSDateComponents *endDateComp = [[NSCalendar currentCalendar] components:NSCalendarUnitDay | NSCalendarUnitMonth | NSCalendarUnitYear fromDate:startDate];
   endDateComp.day++;
   NSDate *endDate = [[NSCalendar currentCalendar] dateFromComponents:endDateComp];
+  
   //Test
   Reservation *newReservation = [_hotelService bookReservationForGuest:_guest inRoom:_room startingOn:startDate endingOn:endDate];
-  XCTAssert(newReservation, @" booking did not work");
+  XCTAssertNotNil(newReservation, @" booking did not work");
 } //end func
 
 - (void) testDeleteReservation {
   //Start date
-  NSDate *startDate = [NSDate date];
+  NSDate *today = [NSDate date];
+  NSDateComponents *startDateComp = [[NSCalendar currentCalendar] components:NSCalendarUnitDay | NSCalendarUnitMonth | NSCalendarUnitYear fromDate:today];
+  startDateComp.day++;
+  NSDate *startDate = [[NSCalendar currentCalendar] dateFromComponents:startDateComp];
+  
   //End date
   NSDateComponents *endDateComp = [[NSCalendar currentCalendar] components:NSCalendarUnitDay | NSCalendarUnitMonth | NSCalendarUnitYear fromDate:startDate];
   endDateComp.day++;
   NSDate *endDate = [[NSCalendar currentCalendar] dateFromComponents:endDateComp];
+  
   //Reservation
   Reservation *reservation = [_hotelService bookReservationForGuest:_guest inRoom:_room startingOn:startDate endingOn:endDate];
   //Test

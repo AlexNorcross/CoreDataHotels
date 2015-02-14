@@ -26,8 +26,14 @@
   //Title
   self.title = [NSString stringWithFormat:@"%s %@", "Room", _selectedRoom.number];
   
+  //Start date
+  NSDate *today = [NSDate date];
+  NSDateComponents *startDateComp = [[NSCalendar currentCalendar] components:NSCalendarUnitDay | NSCalendarUnitMonth | NSCalendarUnitYear fromDate:today];
+  startDateComp.day++;
+  NSDate *startDate = [[NSCalendar currentCalendar] dateFromComponents:startDateComp];
+  [_startDatePicker setDate:startDate];
+  
   //End date
-  NSDate *startDate = _startDatePicker.date;
   NSDateComponents *endDateComp = [[NSCalendar currentCalendar] components:NSCalendarUnitDay | NSCalendarUnitMonth | NSCalendarUnitYear fromDate:startDate];
   endDateComp.day++;
   NSDate *endDate = [[NSCalendar currentCalendar] dateFromComponents:endDateComp];

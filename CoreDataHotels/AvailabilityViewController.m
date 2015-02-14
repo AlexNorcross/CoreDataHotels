@@ -27,9 +27,15 @@
   
   //Title
   self.title = @"Check Availability";
+
+  //Start date
+  NSDate *today = [NSDate date];
+  NSDateComponents *startDateComp = [[NSCalendar currentCalendar] components:NSCalendarUnitDay | NSCalendarUnitMonth | NSCalendarUnitYear fromDate:today];
+  startDateComp.day++;
+  NSDate *startDate = [[NSCalendar currentCalendar] dateFromComponents:startDateComp];
+  [_startDatePicker setDate:startDate];
   
   //End date
-  NSDate *startDate = _startDatePicker.date;
   NSDateComponents *endDateComp = [[NSCalendar currentCalendar] components:NSCalendarUnitDay | NSCalendarUnitMonth | NSCalendarUnitYear fromDate:startDate];
   endDateComp.day++;
   NSDate *endDate = [[NSCalendar currentCalendar] dateFromComponents:endDateComp];
@@ -61,8 +67,8 @@
       if (fetchErrorReservations == nil) {
         //Rooms not available:
         NSMutableArray *roomsNotAvail = [[NSMutableArray alloc] init];
-        for (Reservation *roomNotAvail in fetchReservationResults) {
-          [roomsNotAvail addObject:roomNotAvail];
+        for (Reservation *currentReservation in fetchReservationResults) {
+          [roomsNotAvail addObject:currentReservation.room];
         } //end for
         
         //Fetch request - w/ predicate to exclude rooms not available
