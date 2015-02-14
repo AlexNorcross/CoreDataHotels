@@ -69,24 +69,24 @@
   //Index
   NSInteger index = [self hashKey:key];
   
-  //Bucket
+  //Buckets
   Bucket *previousBucket;
-  Bucket *currentBucket = _hashArray[index];
+  Bucket *currentBucket = _hashArray[index]; //containing data for key
   
-  //Delete bucket
+  //Delete
   while (currentBucket != nil) {
-    if ([key isEqualToString:currentBucket.key]) {
-      if (previousBucket != nil) {
-        Bucket *nextBucket = currentBucket.next;
+    if ([key isEqualToString:currentBucket.key]) { //at the bucket to delete
+      if (previousBucket != nil) { //at the head of the list
+        Bucket *nextBucket = currentBucket.next; //will be nil, if only one bucket in linked list; delete bucket
         if (nextBucket != nil) {
           nextBucket = [[Bucket alloc] init];
         } //end if
         _hashArray[index] = nextBucket;
-      } else {
+      } else { //mid-list, delete bucket
         previousBucket.next = currentBucket.next;
       } //end if
       return;
-    } else {
+    } else { //key does not match, go to next bucket
       previousBucket = currentBucket;
       currentBucket = currentBucket.next;
     } //end if

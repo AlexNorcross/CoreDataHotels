@@ -30,6 +30,7 @@
 		BA1EC2661A8D12F9009BB3BF /* HotelServicesTests.m in Sources */ = {isa = PBXBuildFile; fileRef = BA1EC2651A8D12F9009BB3BF /* HotelServicesTests.m */; };
 		BA1EC2691A8D72A9009BB3BF /* HashTable.m in Sources */ = {isa = PBXBuildFile; fileRef = BA1EC2681A8D72A9009BB3BF /* HashTable.m */; };
 		BA1EC26C1A8D72C3009BB3BF /* Bucket.m in Sources */ = {isa = PBXBuildFile; fileRef = BA1EC26B1A8D72C3009BB3BF /* Bucket.m */; };
+		BA1EC26E1A8F18DE009BB3BF /* HashTableTests.m in Sources */ = {isa = PBXBuildFile; fileRef = BA1EC26D1A8F18DE009BB3BF /* HashTableTests.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -85,6 +86,7 @@
 		BA1EC2681A8D72A9009BB3BF /* HashTable.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HashTable.m; sourceTree = "<group>"; };
 		BA1EC26A1A8D72C3009BB3BF /* Bucket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Bucket.h; sourceTree = "<group>"; };
 		BA1EC26B1A8D72C3009BB3BF /* Bucket.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Bucket.m; sourceTree = "<group>"; };
+		BA1EC26D1A8F18DE009BB3BF /* HashTableTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HashTableTests.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -152,6 +154,7 @@
 			children = (
 				BA1EC2171A894AF4009BB3BF /* CoreDataHotelsTests.m */,
 				BA1EC2651A8D12F9009BB3BF /* HotelServicesTests.m */,
+				BA1EC26D1A8F18DE009BB3BF /* HashTableTests.m */,
 				BA1EC2151A894AF4009BB3BF /* Supporting Files */,
 			);
 			path = CoreDataHotelsTests;
@@ -342,6 +345,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BA1EC26E1A8F18DE009BB3BF /* HashTableTests.m in Sources */,
 				BA1EC2661A8D12F9009BB3BF /* HotelServicesTests.m in Sources */,
 				BA1EC2181A894AF4009BB3BF /* CoreDataHotelsTests.m in Sources */,
 			);

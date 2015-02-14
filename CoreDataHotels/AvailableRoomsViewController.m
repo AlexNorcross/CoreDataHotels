@@ -20,7 +20,7 @@
 
 @implementation AvailableRoomsViewController
 
-//Setup
+//Setup - should really be in a FetchedResultsController
 - (void)viewDidLoad {
   [super viewDidLoad];
   
