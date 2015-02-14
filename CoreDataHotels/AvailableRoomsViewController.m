@@ -96,11 +96,11 @@
 
 #pragma mark - table view delegate
 
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-  RoomBookViewController *vcRoomBook = [self.storyboard instantiateViewControllerWithIdentifier:@"VC_ROOM_BOOK"];
-  NSArray *currentHotelRooms = _hotelRooms[indexPath.section];
-  Room *newRoom = currentHotelRooms[indexPath.row];
-  vcRoomBook.selectedRoom = newRoom;
-  [self.navigationController pushViewController:vcRoomBook animated:true];
-} //end func
+//- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+//  RoomBookViewController *vcRoomBook = [self.storyboard instantiateViewControllerWithIdentifier:@"VC_ROOM_BOOK"];
+//  NSArray *currentHotelRooms = _hotelRooms[indexPath.section];
+//  Room *newRoom = currentHotelRooms[indexPath.row];
+//  vcRoomBook.selectedRoom = newRoom;
+//  [self.navigationController pushViewController:vcRoomBook animated:true];
+//} //end func
 @end
