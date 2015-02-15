@@ -12,30 +12,41 @@
 #import "Bucket.h"
 
 @interface HashTableTests : XCTestCase
-
+@property (nonatomic) HashTable *hashTable;
 @end
 
 @implementation HashTableTests
 
 - (void)setUp {
-    [super setUp];
-    // Put setup code here. This method is called before the invocation of each test method in the class.
-}
-
-- (void)tearDown {
-    // Put teardown code here. This method is called after the invocation of each test method in the class.
-    [super tearDown];
-}
-
-- (void) testAddItemForKey {
-  HashTable *hashTable = [[HashTable alloc] initForSize:2];
+  [super setUp];
+  // Put setup code here. This method is called before the invocation of each test method in the class.
+  
+  _hashTable = [[HashTable alloc] initForSize:2];
   Bucket *bucket1 = [[Bucket alloc] init];
   Bucket *bucket2 = [[Bucket alloc] init];
   Bucket *bucket3 = [[Bucket alloc] init];
-  [hashTable addItem:bucket1 forKey:@"one"];
-  [hashTable addItem:bucket2 forKey:@"two"];
-  [hashTable addItem:bucket3 forKey:@"three"];
-  XCTAssert(@"not a great assert");
+  [_hashTable addItem:bucket1 forKey:@"one"];
+  [_hashTable addItem:bucket2 forKey:@"two"];
+  [_hashTable addItem:bucket3 forKey:@"three"];
+} //end func
+
+- (void)tearDown {
+  // Put teardown code here. This method is called after the invocation of each test method in the class.
+  [super tearDown];
+  
+  _hashTable = nil;
+}
+
+- (void) testAddItemForKey {
+  //Check that item was added.
+  XCTAssertNotNil([_hashTable getItemForKey:@"two"], @"ugh!");
+} //end func
+
+- (void) testRemoveItemForKey {
+  //Add item.
+  [_hashTable removeItemForKey:@"two"];
+  //Check that item was removed.
+  XCTAssertNil([_hashTable getItemForKey:@"two"], @"ugh!");
 } //end func
 
 - (void)testExample {

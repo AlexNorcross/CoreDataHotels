@@ -57,6 +57,7 @@
   //Add
   Bucket *head = _hashArray[index];
   if (head.data != nil) {
+    newBucket.next = head; //add bucket to head
     _hashArray[index] = newBucket;
   } else {
     newBucket.next = head;
@@ -76,14 +77,19 @@
   //Delete
   while (currentBucket != nil) {
     if ([key isEqualToString:currentBucket.key]) { //at the bucket to delete
-      if (previousBucket != nil) { //at the head of the list
-        Bucket *nextBucket = currentBucket.next; //will be nil, if only one bucket in linked list; delete bucket
+      if (previousBucket != nil) { //not at head
+        Bucket *nextBucket = currentBucket.next;
         if (nextBucket != nil) {
+          previousBucket.next = nextBucket; //skip over bucket to delete
+        } else {
           nextBucket = [[Bucket alloc] init];
         } //end if
-        _hashArray[index] = nextBucket;
-      } else { //mid-list, delete bucket
-        previousBucket.next = currentBucket.next;
+      } else { //at head
+        Bucket *head = currentBucket.next;
+        if (head.next == nil) {
+          head.next = [[Bucket alloc] init];
+        } //end if
+        _hashArray[index] = currentBucket.next;
       } //end if
       return;
     } else { //key does not match, go to next bucket
@@ -96,6 +102,15 @@
 //Retrieve item
 - (id) getItemForKey: (NSString *)key {
   NSInteger index = [self hashKey:key];
-  return _hashArray[index];
+  Bucket *currentBucket = self.hashArray[index];
+  
+  while (currentBucket != nil) {
+    if ([currentBucket.key isEqualToString:key]) {
+      return currentBucket.data;
+    } else {
+      currentBucket = currentBucket.next;
+    } //end if
+  } //end while
+  return nil;
 } //end func
 @end
